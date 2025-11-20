@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 16px;
+        color: #202124;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: 18px;
+      }
+
+      section {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+      }
+
+      .slider-value {
+        font-size: 32px;
+        font-weight: 600;
+        text-align: center;
+        margin: 12px 0;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+      }
+
+      button {
+        border: 1px solid #dadce0;
+        border-radius: 4px;
+        background: #fff;
+        padding: 6px 12px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #f1f3f4;
+      }
+
+      .case-option {
+        margin-bottom: 8px;
+      }
+
+      .metrics {
+        margin-top: 12px;
+        padding: 8px;
+        background: #f8f9fa;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        font-size: 13px;
+      }
+
+      .metrics div {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 4px;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Exposure Controls</h1>
+
+    <section>
+      <label for="pointsSlider">Points</label>
+      <input
+        type="range"
+        id="pointsSlider"
+        min="1"
+        max="100"
+        step="1"
+      />
+      <div class="slider-value" id="sliderValue">—</div>
+      <div class="buttons">
+        <button type="button" onclick="stepSlider(-5)">-5</button>
+        <button type="button" onclick="stepSlider(5)">+5</button>
+      </div>
+    </section>
+
+    <section>
+      <label>Scenario</label>
+      <div id="caseOptions"></div>
+      <button type="button" id="metricsToggle" onclick="toggleMetrics()">
+        Show metrics
+      </button>
+      <div class="metrics hidden" id="metricsPanel"></div>
+    </section>
+
+    <script>
+      let cases = {};
+      let metricsVisible = false;
+
+      function initSidebar(data) {
+        cases = data.cases;
+        renderCaseOptions(data.caseKey);
+        setSliderValue(data.sliderValue, false);
+      }
+
+      function renderCaseOptions(selectedKey) {
+        const container = document.getElementById('caseOptions');
+        container.innerHTML = '';
+        Object.keys(cases).forEach((key) => {
+          const option = document.createElement('div');
+          option.className = 'case-option';
+          option.innerHTML = `
+            <label>
+              <input type="radio" name="scenario" value="${key}" ${
+                key === selectedKey ? 'checked' : ''
+              } />
+              ${cases[key].label}
+            </label>
+          `;
+          container.appendChild(option);
+        });
+
+        container.querySelectorAll('input[name="scenario"]').forEach((input) => {
+          input.addEventListener('change', (event) => {
+            const caseKey = event.target.value;
+            google.script.run
+              .withSuccessHandler(() => updateMetrics(caseKey))
+              .saveCaseSelection(caseKey);
+          });
+        });
+
+        updateMetrics(selectedKey);
+      }
+
+      function updateMetrics(caseKey) {
+        const panel = document.getElementById('metricsPanel');
+        panel.classList.toggle('hidden', !metricsVisible);
+        const metrics = cases[caseKey].metrics;
+        panel.innerHTML = Object.keys(metrics)
+          .map(
+            (metric) =>
+              `<div><span>${metric}</span><span>${metrics[metric]}</span></div>`
+          )
+          .join('');
+      }
+
+      function setSliderValue(value, persist = true) {
+        const slider = document.getElementById('pointsSlider');
+        const display = document.getElementById('sliderValue');
+        slider.value = value;
+        display.textContent = value;
+        if (persist) {
+          google.script.run.saveSliderValue(Number(value));
+        }
+      }
+
+      const slider = document.getElementById('pointsSlider');
+      slider.addEventListener('input', (e) => {
+        setSliderValue(e.target.value, false);
+      });
+      slider.addEventListener('change', (e) => {
+        setSliderValue(e.target.value);
+      });
+
+      function stepSlider(delta) {
+        const slider = document.getElementById('pointsSlider');
+        const next = Math.max(1, Math.min(100, Number(slider.value) + delta));
+        setSliderValue(next);
+      }
+
+      function toggleMetrics() {
+        metricsVisible = !metricsVisible;
+        const panel = document.getElementById('metricsPanel');
+        const toggle = document.getElementById('metricsToggle');
+        toggle.textContent = metricsVisible ? 'Hide metrics' : 'Show metrics';
+        panel.classList.toggle('hidden', !metricsVisible);
+      }
+
+      google.script.run.withSuccessHandler(initSidebar).getSidebarData();
+    </script>
+  </body>
+</html>
+
