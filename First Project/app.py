@@ -86,7 +86,7 @@ def summarize_results(name, results):
             formatted_results += f"Link: {result.get('link', 'N/A')}\n\n"
         
         # Create the prompt
-        prompt = f"""Based on these Google search results about {name}, write a funny 2-3 sentence introduction about this person. Include interesting details. We are a data removal company so we don't want our data out there. If you find an email or phone number, make a joke about it.
+        prompt = f"""Based on these Google search results about {name}, write a funny 2-3 sentence introduction about this person. Include interesting details. We are a data removal company so we don't want our data out there. If you find an email or phone number, make a joke about it. But definitely skip whe wordking of current company that he/she is working at. Focus only on skills and experience. And skip position.
 
 Search Results:
 {formatted_results}"""
