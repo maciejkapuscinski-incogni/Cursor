@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "meta-ads-library"
+version = "0.1.0"
+description = "Meta Ads Library ingestion pipeline with optional later-stage analysis."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "alembic>=1.14.0",
+  "httpx>=0.28.0",
+  "pydantic>=2.10.0",
+  "pydantic-settings>=2.7.0",
+  "python-dotenv>=1.0.1",
+  "sqlalchemy>=2.0.36",
+  "typer>=0.15.1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.0",
+]
+postgres = [
+  "psycopg[binary]>=3.2.0",
+]
+apify = [
+  "apify-client>=1.6.0",
+]
+
+[project.scripts]
+meta-ads = "meta_ads.cli:app"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

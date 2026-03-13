@@ -1,0 +1,15 @@
+[
+  {
+    "adArchiveId": "123456789",
+    "pageId": "987654321",
+    "pageName": "Example Advertiser",
+    "snapshot": {
+      "body": { "text": "Ad body text" },
+      "cards": [
+        {
+          "videoHdUrl": "https://video-det1-1.xx.fbcdn.net/o1/v/t2/f2/m367/AQMd3P0E2K2ZXBbCXTbYenJbLJfzcc4ZwXqVBRa6FtPZVg3yuleIY4YIkhTCb5-Op9Pxah9vMEIAa5WnCmj8zT9JIEa6r-kCZVy3qAAiXg.mp4?_nc_cat=105&_nc_sid=8bf8fe&_nc_ht=video-det1-1.xx.fbcdn.net&_nc_ohc=3m-dqTQWeu0Q7kNvwHyTCAy&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5WSV9VU0VDQVNFX1BST0RVQ1RfVFlQRS4uQzMuNzIwLnByb2dyZXNzaXZlX2gyNjQtYmFzaWMtZ2VuMl83MjBwIiwieHB2X2Fzc2V0X2lkIjoxNzg4NTQ0MTA5NDQ0ODQ1MywiYXNzZXRfYWdlX2RheXMiOjE4LCJ2aV91c2VjYXNlX2lkIjoxMDA5OSwiZHVyYXRpb25fcyI6MTAwLCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&_nc_gid=dHnyaZdMZ6jd-RdP8jmbaA&_nc_ss=8&_nc_zt=28&oh=00_AfwLU5lcEx_TeUC5IbQga1hMJXzib0xJbB7M3EwVaOy9gQ&oe=69B9BC75"
+        }
+      ]
+    }
+  }
+]
